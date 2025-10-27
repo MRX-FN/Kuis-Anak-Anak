@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Kuis Interaktif — Pilgan + Uraian</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg1: #f0f9ff;
+            --bg2: #fff6fb;
+            --card: #fff;
+            --accent1: #60a5fa;
+            --accent2: #f472b6;
+            --success: #45d07b;
+            --danger: #ff7b7b;
+            --muted: #6b7785;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(180deg, var(--bg1), var(--bg2));
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 920px;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 16px;
+            box-shadow: 0 16px 40px rgba(20, 30, 60, 0.06);
+            padding: 20px;
+            margin-bottom: 14px;
+            overflow: hidden;
+        }
+
+        .header {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent1), var(--accent2));
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 20px;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #12343f;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: var(--muted)
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Inputs & buttons */
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 94%;
+            max-width: 760px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(10, 10, 30, 0.06);
+            font-size: 15px;
+            outline: none;
+            margin: 8px 0;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 16px;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(90deg, var(--accent1), var(--accent2));
+            box-shadow: 0 10px 22px rgba(96, 165, 250, 0.14);
+        }
+
+        button.small {
+            background: transparent;
+            color: #12343f;
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(10, 10, 30, 0.06);
+            box-shadow: none;
+            font-weight: 600
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed
+        }
+
+        /* Aritmatika */
+        .arith-box {
+            font-size: 20px;
+            font-weight: 700;
+            padding: 14px;
+            border-radius: 12px;
+            background: linear-gradient(90deg, #fff, #f6fbff);
+            border: 1px solid rgba(20, 80, 120, 0.04);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Story & question */
+        .story-box {
+            background: linear-gradient(180deg, #fffdf6, #fef9f2);
+            border-radius: 12px;
+            padding: 12px;
+            border: 1px solid rgba(245, 200, 100, 0.12);
+            margin-bottom: 12px;
+            color: #13303a;
+            text-align: left;
+            line-height: 1.6;
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: 700;
+            color: #10323b;
+            margin-bottom: 12px;
+        }
+
+        /* options */
+        .options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 6px;
+        }
+
+        .option {
+            background: #fbfcff;
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            border: 1px solid rgba(10, 10, 30, 0.03);
+            transition: transform .15s ease, box-shadow .15s ease, background .15s;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .option .label {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(180deg, #fff, #f1f6ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #23303a
+        }
+
+        .option:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(20, 30, 60, 0.06)
+        }
+
+        .option.correct {
+            background: linear-gradient(90deg, rgba(97, 224, 138, 0.15), rgba(219, 255, 238, 0.06));
+            border: 1px solid rgba(97, 224, 138, 0.18)
+        }
+
+        .option.wrong {
+            background: linear-gradient(90deg, rgba(255, 120, 120, 0.12), rgba(255, 230, 230, 0.02));
+            border: 1px solid rgba(255, 120, 120, 0.14)
+        }
+
+        /* controls */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 14px;
+        }
+
+        .muted {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* uraian one-slide */
+        .uraian-q {
+            background: #fffaf0;
+            border-radius: 10px;
+            padding: 12px;
+            border: 1px solid rgba(245, 200, 100, 0.08);
+            margin-bottom: 12px;
+            color: #12343f;
+        }
+
+        /* final */
+        .score-box {
+            text-align: center;
+            padding: 18px;
+            border-radius: 12px;
+            background: linear-gradient(180deg, #fff, #f4fcff);
+            border: 1px solid rgba(90, 209, 255, 0.08)
+        }
+
+        .score-number {
+            font-size: 36px;
+            font-weight: 800;
+            color: #12343f;
+            margin: 8px 0;
+        }
+
+        /* responsive */
+        @media (max-width:720px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+
+            input[type="text"],
+            textarea {
+                width: 92%
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+
+        <div class="card header">
+            <div class="logo">MRX</div>
+            <div>
+                <div class="title">Kuis Interaktif Ceria</div>
+                <div class="subtitle">Kuis asik inovatif</div>
+            </div>
+        </div>
+
+        <!-- LOGIN -->
+        <section id="login" class="card">
+            <div class="center">
+                <h2>Selamat Datang! 🌈</h2>
+                <div class="muted">Masukkan nama dan kelasmu untuk mulai kuis</div>
+            </div>
+            <div style="height:12px"></div>
+            <div class="center">
+                <input id="name" type="text" placeholder="Nama (contoh: Budi)">
+                <input id="kelas" type="text" placeholder="Kelas (contoh: 4A)">
+                <div style="height:8px"></div>
+                <button id="btnStart">Mulai Kuis 🚀</button>
+            </div>
+        </section>
+
+        <!-- ARITMATIKA -->
+        <section id="arith" class="card hidden">
+            <div class="center">
+                <h3>Tantangan Angka 🔢</h3>
+                <div class="arith-box" id="arith-box">3 - 2 = ?</div>
+                <input id="arith-answer" type="number" placeholder="Jawaban">
+                <div style="height:8px"></div>
+                <button id="btnCheckArith">Kirim Jawaban</button>
+                <div style="height:10px"></div>
+                <div id="arith-feedback" class="muted"></div>
+                <div style="height:6px"></div>
+                <div class="muted">Jawab benar untuk membuka soal berikutnya</div>
+            </div>
+        </section>
+
+        <!-- QUIZ Pilihan Ganda -->
+        <section id="quiz" class="card hidden">
+            <div class="story-box" id="story-box" style="display:none"></div>
+            <div class="question" id="question-text">Pertanyaan</div>
+            <div class="options" id="options"></div>
+
+            <div class="controls">
+                <div class="muted">Soal <span id="progress">1</span> / <span id="total">10</span></div>
+                <div>
+                    <button id="btnPrev" class="small" disabled>
+                    <button id="btnNext" disabled>Jawab & Lanjut ➜</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- POST-PG: lanjut ke uraian -->
+        <section id="post" class="card hidden center">
+            <h3>Kamu sudah menyelesaikan bagian pilihan ganda 🎉</h3>
+            <div class="muted">Skor pilihan ganda akan ditampilkan setelah kamu menyelesaikan soal uraian.</div>
+            <div style="height:12px"></div>
+            <button id="btnToUraian">LANJUT KE SOAL URAIAN ✏️</button>
+        </section>
+
+        <!-- URAIAN SLIDES (1 soal per slide) -->
+        <section id="uraian" class="card hidden">
+            <div class="center">
+                <h3>Soal Uraian</h3>
+                <div class="muted">Jawab satu per satu lalu klik Lanjut</div>
+            </div>
+
+            <div id="uraian-slide-container" style="margin-top:12px"></div>
+
+            <div style="display:flex;gap:10px;justify-content:center;margin-top:12px">
+                <button id="btnPrevUraian" class="small" disabled>⟵ Sebelumnya</button>
+                <button id="btnNextUraian" class="small">Lanjut ➜</button>
+                <button id="btnSubmitUraian" style="display:none">Kirim Semua Jawaban ✅</button>
+            </div>
+        </section>
+
+        <!-- FINAL SCORE -->
+        <section id="final" class="card hidden center">
+            <div class="score-box">
+                <h2>🎉 Selesai Semua!</h2>
+                <div class="score-number" id="final-score-text">Skor: 0 / 10</div>
+                <div class="muted" id="final-message"></div>
+                <div style="height:12px"></div>
+                <button id="btnDownloadCSV">📥 Download Data (CSV)</button>
+                <div style="height:8px"></div>
+                <button id="btnRestart" class="small">Ulangi Semua 🔁</button>
+            </div>
+        </section>
+
+    </div> 
+     
+    <script>
+        /* =========================
+           CONFIG
+           - https://script.google.com/macros/s/AKfycbz5o-vjl6QC_CoBawUhxsQvqtS67BwqtYvhmxPs7ZR08jIq0J-pGe0E_duLNdCvguxn/exec
+
+           - If empty, sending will be skipped but CSV download still available.
+           ========================= */
+           /* =========================
+   KIRIM DATA KE GOOGLE SHEET
+   ========================= */
+function sendToGoogleSheet(data) {
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+  .then(() => {
+    console.log("✅ Data berhasil dikirim ke Google Sheet!");
+  })
+  .catch((error) => {
+    console.error("❌ Gagal mengirim data:", error);
+  });
+}
+
+/* =========================
+   SAAT KUIS SELESAI
+   ========================= */
+function onQuizFinish() {
+  const nama = document.getElementById("nama")?.value || "T";
+  const kelas = document.getElementById("kelas")?.value || "-";
+  const skor = document.getElementById("final-score-text")?.innerText || "0";
+
+  // Ambil semua jawaban uraian (asumsikan ada 5)
+  const jawabanUraian = window.jawabanUraian || [];
+  
+  // Pastikan panjang array selalu 5 elemen
+  const uraian1 = jawabanUraian[0] || "";
+  const uraian2 = jawabanUraian[1] || "";
+  const uraian3 = jawabanUraian[2] || "";
+  const uraian4 = jawabanUraian[3] || "";
+  const uraian5 = jawabanUraian[4] || "";
+
+  const data = {
+    nama: nama,
+    kelas: kelas,
+    skor: skor,
+    uraian1: uraian1,
+    uraian2: uraian2,
+    uraian3: uraian3,
+    uraian4: uraian4,
+    uraian5: uraian5,
+  };
+
+  sendToGoogleSheet(data);
+  alert("✅ Data berhasil dikirim ke Google Sheet!");
+}
+
+/* =========================
+   TAMBAHKAN TOMBOL KIRIM
+   ========================= */
+document.getElementById("btnDownloadCSV").insertAdjacentHTML(
+  "afterend",
+  `<button id="btnKirimSheet">📤 Kirim ke Google Sheet</button>`
+);
+
+/* =========================
+   EVENT KETIKA TOMBOL DIKLIK
+   ========================= */
+document.getElementById("btnKirimSheet").addEventListener("click", onQuizFinish);
+         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz5o-vjl6QC_CoBawUhxsQvqtS67BwqtYvhmxPs7ZR08jIq0J-pGe0E_duLNdCvguxn/exec";
+
+        /* =========================
+           DATA
+           ========================= */
+        const aritmatikaSoal = [
+            { soal: "3 - 2 = ?", jawab: 1 },
+            { soal: "6 - 4 = ?", jawab: 2 },
+            { soal: "5 - 2 = ?", jawab: 3 },
+            { soal: "7 - 3 = ?", jawab: 4 },
+            { soal: "11 - 6 = ?", jawab: 5 },
+            { soal: "9 - 3 = ?", jawab: 6 },
+            { soal: "16 - 9 = ?", jawab: 7 },
+            { soal: "20 - 12 = ?", jawab: 8 },
+            { soal: "15 - 6 = ?", jawab: 9 },
+            { soal: "20 - 10 = ?", jawab: 10 }
+        ];
+
+        const quizData = [
+            {
+                story: `Bacalah cerita di bawah ini dengan saksama!
+
+"GAGAL"
+
+Tiara mendapat giliran bernyanyi di depan kelas. Sejak pagi, ia sudah berlatih, tetapi ketika berdiri di depan teman-temannya, ia mendadak lupa lirik lagu. Tiara merasa malu dan langsung duduk kembali. Teman-temannya ada yang menertawakan, tetapi ada juga yang memberi semangat. Pak Guru menenangkan dan membujuk Tiara untuk mencoba lagi. Namun, Tiara merasa kecewa dan tidak yakin ingin mencoba lagi.`,
+                question: "1. Permasalahan yang dihadapi tokoh Tiara dalam cerita di atas yaitu … .",
+                options: ["A. Tiara lupa lirik lagu saat tampil", "B. Tiara malu ketika bernyanyi", "C. Tiara gugup di depan kelas"],
+                answer: 0
+            },
+            {
+                story: "",
+                question: "2. Solusi yang sebaiknya diambil Tiara untuk mengatasi kesulitannya saat bernyanyi yaitu … .",
+                options: ["A. berlatih hafalan lagu sebentar agar tidak lupa", "B. meminta bantuan teman untuk berlatih bersama", "C. mencoba menyanyi dengan percaya diri walau belum hafal"],
+                answer: 1
+            },
+            {
+                story: `Perhatikan kalimat berikut!
+                
+1)“Ibu, aku sudah mengerjakan PR,” kata Rina.
+2)Ayah berkata, “Besok kita pergi ke pasar.”
+3)Sinta berkata, “Saya suka sekali membaca buku”.
+4)“Kita harus menjaga kebersihan, kata Pak Guru.”`,
+                question: "3. Kalimat yang menggunakan tanda petik (“…”) secara tepat adalah … .",
+                options: ["A. 1 dan 2", "B. 1 dan 3", "C. 2 dan 4"],
+                answer: 0
+            },
+            {
+                story: "Perhatikan kalimat berikut!\n\nTugas ini menumpuk setinggi gunung.\n\n",
+                question: "4. Makna dari kalimat di atas adalah … .",
+                options: ["A. tugas yang dikerjakan", "B. tugas yang banyak", "C. tugas dan gunung sama tinggi"],
+                answer: 1
+            },
+            {
+                story: "Perhatikan makna berikut!\n\n“Seseorang merasa lapar sekali.”\n\n",
+                question: "5. Kalimat yang menggunakan majas hiperbola sesuai makna di atas adalah … .",
+                options: ["A. perutku keroncongan sejak pagi", "B. aku lapar sekali karena belum sarapan", "C. aku lapar sampai bisa menelan seluruh meja makan ini"],
+                answer: 2
+            },
+            {
+                story: `Bacalah narasi di bawah ini dengan saksama!
+                Tari dan Putri sedang berjalan menuju kelas. Tari membawa banyak tumpukan buku. Tari kehilangan keseimbangan sehingga beberapa buku terjatuh ke lantai. Tari berkata, “Put, ambilkan buku-bukunya!” Putri membantu Tari memungut buku-buku yang jatuh. Tari berkata, “Baik, sudah.” Setelah semua buku diambil, mereka melanjutkan perjalanan menuju kelas.`,
+                question: "6. Ucapan Tari masih kurang tepat, sebaiknya … .",
+                options: [`A. “Put, tolong ambilkan buku-bukunya” dan “Baik, sudah”`, `B. “Put, tolong ambilkan buku-bukunya” dan “Baik, sudah. Terima kasih”`, `C. “Put, ambilkan buku-bukunya” dan “Baik, sudah. Terima kasih”`],
+                answer: 1
+            },
+            {
+                story: "Perhatikan kalimat-kalimat berikut!\n\n(1) Sebuah kolam kecil menambah indah suasana.\n(2) Rumput hijau terhampar luas di halaman.\n(3) Beberapa ekor ikan koi tampak berenang di kolam.\n(4) Halaman rumah Mira sangat asri.\n\n",
+                question: "7. Urutan kalimat yang benar agar menjadi paragraf yang padu adalah … .",
+                options: ["A. (4)-(2)-(3)-(1)", "B. (4)-(2)-(1)-(3)", "C. (4)-(1)-(2)-(3)"],
+                answer: 1
+            },
+            {
+                story: `Bacalah cerita di bawah ini dengan saksama!
+
+                Setiap pagi, Rara membantu ibu menyiram bunga di halaman rumah. Ia dan ibunya memiliki banyak bunga, seperti mawar, melati, dan anggrek. Setelah menyiram, Rara mengelap pot yang kotor dan menata bunga agar terlihat rapi. Ibu Rara selalu mengingatkan agar mereka merawat bunga dengan penuh kasih supaya tumbuh subur. Rara merasa senang melihat halaman rumahnya tampak segar dan berwarna. Halaman rumah Rara tampak indah karena selalu dirawat dengan baik setiap hari.`,
+                question: "8. Ide pokok paragraf di atas adalah … .",
+                options: ["A. Rara dan ibunya memiliki berbagai bunga yang dirawat di halaman rumah", "B. Ibu Rara selalu mengingatkan Rara untuk merawat bunga dengan penuh kasih", "C. Rara dan ibunya rajin merawat bunga sehingga halaman rumah tampak indah"],
+                answer: 2
+            },
+            {
+                story: "Perhatikan kalimat berikut!\n\n1. “Aku lapar sekali,” kata Edo.\n2. Dika berkata “Aku ingin membeli es krim.”\n3. “Besok kita belajar kelompok di rumah Sinta,” ujar Rani.\n4. Guru berkata, “Kerjakan tugasmu dengan sungguh-sungguh.”\n\n",
+                question: "9.Kalimat yang menggunakan tanda petik (“…”) secara tepat adalah … .",
+                options: ["A. 1 dan 3", "B. 1 dan 4", "C. 2 dan 3"],
+                answer: 2
+            },
+            {
+                story: "Perhatikan kalimat-kalimat acak berikut!\n\n1. Di taman, mereka bermain ayunan dan perosotan.\n2. Setelah sarapan, Sinta dan adiknya pergi ke taman.\n3. Mereka pulang dengan perasaan gembira.\n4. Hari Minggu pagi, udara terasa sejuk dan cerah.\n\n",
+                question: "10. Urutan kalimat yang benar agar membentuk cerita yang runtut adalah … .",
+                options: ["A. 4 – 2 – 1 – 3", "B. 1 – 3 – 2 – 4", "C. 4 – 1 – 2 – 3"],
+                answer: 0
+            }
+        ];
+
+        const uraianData = [
+            { q: `1. Berikan 2 contoh kalimat langsung!` },
+            {
+                q: `2. Bacalah cerita di bawah ini dengan saksama!
+Ani melihat tas temannya terjatuh di depan kelas. Ia ingin meminta bantuan Sari untuk mengambilkannya.
+Tuliskan kalimat yang sebaiknya diucapkan Ani kepada Sari menggunakan kata ajaib dengan tepat sesuai konteks!.` },
+
+            { q: `3. Perhatikan gambar ilustrasi berikut! 
+                <a href="https://ibb.co.com/xtqrfY1d"><img src="https://i.ibb.co.com/v64MQh3R/Group-78.png" alt="Group-78" border="0" /></a> 
+                Buatlah sebuah cerita secara runtut dan padu berdasarkan urutan gambar tersebut!.` },
+            {
+                q: `4. Perhatikan 2 kalimat di bawah ini!
+(1) Hari ini udara panas sekali rasanya aku bisa pingsan di bawah sinar matahari.
+(2) Hari ini udara panas sekali rasanya aku bisa tenggelam oleh keringatku sendiri saat bermain di luar.
+Pertanyaan :
+a) Kalimat manakah yang menggunakan majas hiperbola?
+b) Apa makna sebenarnya dari kalimat bermajas hiperbola tersebut?` },
+            {
+                q: `5. Bacalah cerita di bawah ini dengan saksama!:
+Saat pelajaran menulis, pensil Raka patah, sedangkan ia tidak membawa rautan. Ia meminta bantuan kepada Bima, tetapi Bima masih menggunakannya. Karena tidak sabar menunggu, Raka mengambil rautan itu tanpa izin. Saat sedang meraut, pensil Bima jatuh dan ujungnya patah. Bima tampak kesal dan berkata, “Raka, kenapa kamu pakai rautanku tanpa izin? Pensilku jadi rusak!” Raka merasa bersalah dan segera berkata, “Maaf, Bima. Aku tidak sabar menunggu.” Bima akhirnya memaafkannya dan mengingatkan agar Raka meminta izin terlebih dahulu sebelum memakai barang orang lain. Raka pun berterima kasih dan berjanji tidak akan mengulanginya lagi.
+Pertanyaan :
+a) Siapakah tokoh utama dalam cerita tersebut?
+b) Bagaimana sikap yang ditunjukkan tokoh utama dalam cerita? Jelaskan pendapatmu tentang sikap tersebut!` }
+        ];
+
+        /* =========================
+           STATE
+           ========================= */
+        let player = { name: '', kelas: '' };
+        let arithIndex = 0;     // which arithmetic challenge to unlock next
+        let currentIndex = 0;   // current MC question index shown
+        let pgScore = 0;
+        let uraianAnswers = Array(uraianData.length).fill('');
+
+        /* =========================
+           ELEMENTS
+           ========================= */
+        const el = id => document.getElementById(id);
+
+        const loginSection = el('login');
+        const arithSection = el('arith');
+        const quizSection = el('quiz');
+        const postSection = el('post');
+        const uraianSection = el('uraian');
+        const finalSection = el('final');
+
+        const btnStart = el('btnStart');
+        const arithBox = el('arith-box');
+        const arithAnswer = el('arith-answer');
+        const btnCheckArith = el('btnCheckArith');
+        const arithFeedback = el('arith-feedback');
+
+        const storyBox = el('story-box');
+        const qText = el('question-text');
+        const optionsWrap = el('options');
+        const progressEl = el('progress');
+        const totalEl = el('total');
+        const btnPrev = el('btnPrev');
+        const btnNext = el('btnNext');
+
+        const btnToUraian = el('btnToUraian');
+        const uraianSlideContainer = el('uraian-slide-container');
+        const btnPrevUraian = el('btnPrevUraian');
+        const btnNextUraian = el('btnNextUraian');
+        const btnSubmitUraian = el('btnSubmitUraian');
+
+        const finalScoreText = el('final-score-text');
+        const finalMessage = el('final-message');
+        const btnDownloadCSV = el('btnDownloadCSV');
+        const btnRestart = el('btnRestart');
+
+        /* Initialize totals */
+        totalEl.textContent = quizData.length;
+
+        /* =========================
+           HELPERS
+           ========================= */
+        function show(elm) { elm.classList.remove('hidden'); }
+        function hide(elm) { elm.classList.add('hidden'); }
+        function clearChildren(node) { while (node.firstChild) node.removeChild(node.firstChild); }
+
+        /* =========================
+           LOGIN -> START
+           ========================= */
+        btnStart.addEventListener('click', () => {
+            const name = el('name').value.trim();
+            const kelas = el('kelas').value.trim();
+            if (!name || !kelas) { alert('Isi nama dan kelas dulu ya 😊'); return; }
+            player.name = name; player.kelas = kelas;
+            // reset state
+            arithIndex = 0; currentIndex = 0; pgScore = 0; uraianAnswers = Array(uraianData.length).fill('');
+            // go to arith first
+            hide(loginSection); show(arithSection);
+            showAritmatika();
+        });
+
+        /* =========================
+           ARITMATIKA
+           ========================= */
+        function showAritmatika() {
+            arithFeedback.textContent = '';
+            arithAnswer.value = '';
+            if (arithIndex < aritmatikaSoal.length) {
+                arithBox.textContent = aritmatikaSoal[arithIndex].soal;
+                show(arithSection);
+                hide(quizSection); hide(postSection); hide(uraianSection); hide(finalSection);
+                setTimeout(() => arithAnswer.focus(), 200);
+            } else {
+                // if somehow finished arith challenges, start quiz at 0
+                arithIndex = 0;
+                startQuizForIndex(0);
+            }
+        }
+
+        btnCheckArith.addEventListener('click', () => {
+            const v = parseInt(arithAnswer.value);
+            if (Number.isNaN(v)) { arithFeedback.textContent = 'Tolong isi angka ya 🙂'; return; }
+            const correct = aritmatikaSoal[arithIndex].jawab;
+            if (v === correct) {
+                // open the corresponding MC question (use arithIndex order)
+                hide(arithSection);
+                currentIndex = arithIndex;
+                startQuizForIndex(currentIndex);
+            } else {
+                arithFeedback.textContent = 'Jawaban salah — coba lagi ya!';
+                arithAnswer.value = '';
+                arithAnswer.focus();
+            }
+        });
+
+        /* =========================
+           QUIZ (MC)
+           ========================= */
+        function startQuizForIndex(idx) {
+            hide(arithSection);
+            hide(postSection);
+            hide(uraianSection);
+            hide(finalSection);
+            show(quizSection);
+            currentIndex = idx;
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = quizData[currentIndex];
+            progressEl.textContent = currentIndex + 1;
+            if (q.story && q.story.trim().length > 0) {
+                storyBox.style.display = 'block';
+                storyBox.innerHTML = q.story.replace(/\n/g, '<br>');
+            } else {
+                storyBox.style.display = 'none';
+                storyBox.textContent = '';
+            }
+            qText.textContent = q.question;
+            clearChildren(optionsWrap);
+            q.options.forEach((opt, i) => {
+                const div = document.createElement('div');
+                div.className = 'option';
+                div.innerHTML = `<div class="label">${String.fromCharCode(65 + i)}</div><div style="flex:1">${opt.replace(/^[A-D]\.\s*/i, '')}</div>`;
+                div.addEventListener('click', () => handleMCSelect(div, i));
+                optionsWrap.appendChild(div);
+            });
+            btnNext.disabled = true;
+            btnPrev.disabled = currentIndex === 0;
+        }
+
+        function handleMCSelect(elm, idx) {
+            const q = quizData[currentIndex];
+            const children = optionsWrap.querySelectorAll('.option');
+            children.forEach(c => c.style.pointerEvents = 'none');
+            if (idx === q.answer) {
+                elm.classList.add('correct');
+                pgScore++;
+            } else {
+                elm.classList.add('wrong');
+                if (children[q.answer]) children[q.answer].classList.add('correct');
+            }
+            btnNext.disabled = false;
+        }
+
+        /* next after answering current MC */
+        btnNext.addEventListener('click', () => {
+            // after answering, advance arithmetic index + show next arith or end
+            arithIndex++;
+            currentIndex++;
+            if (currentIndex < quizData.length) {
+                // show arith to unlock next
+                show(arithSection);
+                hide(quizSection);
+                showAritmatika();
+            } else {
+                // finished MC
+                hide(quizSection);
+                show(postSection);
+            }
+        });
+
+        /* prev to go back to prior MC (optional) */
+        btnPrev.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                startQuizForIndex(currentIndex);
+            }
+        });
+
+        /* =========================
+           POST -> to URAIAN
+           ========================= */
+        el('btnToUraian').addEventListener('click', () => {
+            hide(postSection);
+            show(uraianSection);
+            buildUraianSlides();
+        });
+
+        /* =========================
+           URAIAN SLIDES
+           ========================= */
+        let uraianIndex = 0;
+        function buildUraianSlides() {
+            uraianSlideContainer.innerHTML = '';
+            uraianData.forEach((item, i) => {
+                const slide = document.createElement('div');
+                slide.className = 'uraian-slide';
+                slide.style.display = i === 0 ? 'block' : 'none';
+                slide.innerHTML = `
+      <div class="uraian-q"><strong>${item.q.replace(/\n/g, '<br>')}</strong></div>
+      <textarea id="uraian_input_${i}" placeholder="Tulis jawaban kamu di sini...">${uraianAnswers[i] || ''}</textarea>
+    `;
+                uraianSlideContainer.appendChild(slide);
+            });
+            uraianIndex = 0;
+            updateUraianControls();
+        }
+
+        function updateUraianControls() {
+            const slides = uraianSlideContainer.querySelectorAll('.uraian-slide');
+            slides.forEach((s, i) => s.style.display = i === uraianIndex ? 'block' : 'none');
+            btnPrevUraian.disabled = uraianIndex === 0;
+            if (uraianIndex === slides.length - 1) {
+                btnNextUraian.style.display = 'none';
+                btnSubmitUraian.style.display = 'inline-block';
+            } else {
+                btnNextUraian.style.display = 'inline-block';
+                btnSubmitUraian.style.display = 'none';
+            }
+            // focus textarea
+            setTimeout(() => {
+                const ta = document.getElementById(`uraian_input_${uraianIndex}`);
+                if (ta) ta.focus();
+            }, 150);
+        }
+
+        btnPrevUraian.addEventListener('click', () => {
+            saveCurrentUraian();
+            if (uraianIndex > 0) { uraianIndex--; updateUraianControls(); }
+        });
+        btnNextUraian.addEventListener('click', () => {
+            saveCurrentUraian();
+            const slides = uraianSlideContainer.querySelectorAll('.uraian-slide');
+            if (uraianIndex < slides.length - 1) { uraianIndex++; updateUraianControls(); }
+        });
+        function saveCurrentUraian() {
+            const ta = document.getElementById(`uraian_input_${uraianIndex}`);
+            if (ta) uraianAnswers[uraianIndex] = ta.value.trim();
+        }
+
+        /* SUBMIT URAIAN -> send & final */
+        btnSubmitUraian.addEventListener('click', () => {
+            // save current
+            saveCurrentUraian();
+            // optional: require at least one answer? we'll allow empty but warn
+            const empty = uraianAnswers.some(a => !a || a.length === 0);
+            if (empty) {
+                if (!confirm('Beberapa jawaban uraian kosong. Tetap kirim? Tekan OK untuk kirim, Cancel untuk melengkapi.')) return;
+            }
+            // prepare payload
+            const payload = {
+                nama: player.name,
+                kelas: player.kelas,
+                skor: pgScore,
+                total_pilgan: quizData.length,
+                uraian: uraianAnswers,
+                timestamp: new Date().toISOString()
+            };
+            // try send to Google Script if provided
+            if (SCRIPT_URL && SCRIPT_URL.trim().length > 5) {
+                fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'application/json' }
+                }).then(r => {
+                    // ignore response detail; proceed to final
+                    showFinal(payload, true);
+                }).catch(err => {
+                    console.error(err);
+                    // still show final but note send failed
+                    showFinal(payload, false);
+                });
+            } else {
+                // not sending, just show final
+                showFinal(payload, false);
+            }
+        });
+
+        /* SHOW FINAL SCORE + enable CSV download */
+        function showFinal(payload, sentToSheet) {
+            hide(uraianSection);
+            hide(postSection);
+            hide(quizSection);
+            hide(arithSection);
+            show(finalSection);
+
+            finalScoreText.textContent = `${player.name} dari kelas ${player.kelas}, skor pilihan gandamu: ${pgScore} / ${quizData.length}`;
+            if (pgScore >= 9) finalMessage.textContent = "🌟 Luar biasa! Kamu sangat hebat!";
+            else if (pgScore >= 7) finalMessage.textContent = "👏 Bagus sekali! Terus pertahankan!";
+            else if (pgScore >= 4) finalMessage.textContent = "👍 Bagus! Terus latihan ya!";
+            else finalMessage.textContent = "💪 Tetap semangat — coba lagi supaya makin baik!";
+
+            // prepare CSV content for download
+            const headers = ['Timestamp', 'Nama', 'Kelas', 'SkorPilihanGanda', 'TotalPilgan'];
+            for (let i = 0; i < uraianData.length; i++) headers.push(`Uraian${i + 1}`);
+            const row = [payload.timestamp, payload.nama, payload.kelas, payload.skor, payload.total_pilgan, ...payload.uraian];
+
+            // store csv string on element dataset for download
+            const csvArr = [headers.join(','), row.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')];
+            el('btnDownloadCSV').dataset.csv = csvArr.join('\n');
+            el('btnDownloadCSV').onclick = () => {
+                const csv = el('btnDownloadCSV').dataset.csv;
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'hasil_kuis_mrx.csv';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url);
+            };
+        }
+
+        /* RESTART */
+        btnRestart.addEventListener('click', () => {
+            // reset and go to login
+            player = { name: '', kelas: '' };
+            arithIndex = 0; currentIndex = 0; pgScore = 0;
+            uraianAnswers = Array(uraianData.length).fill('');
+            el('name').value = ''; el('kelas').value = '';
+            hide(arithSection); hide(quizSection); hide(postSection); hide(uraianSection); hide(finalSection);
+            show(loginSection);
+        });
+
+        /* Accessibility: Enter key for arith & login */
+        el('arith-answer').addEventListener('keydown', e => { if (e.key === 'Enter') btnCheckArith.click(); });
+        el('name').addEventListener('keydown', e => { if (e.key === 'Enter') btnStart.click(); });
+
+        /* init view */
+        show(loginSection);
+        hide(arithSection); hide(quizSection); hide(postSection); hide(uraianSection); hide(finalSection);
+
+    </script>
+</body>
+
+</html>
