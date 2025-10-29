@@ -67,7 +67,7 @@ document.getElementById("btnDownloadCSV").insertAdjacentHTML(
    EVENT KETIKA TOMBOL DIKLIK
    ========================= */
 document.getElementById("btnKirimSheet").addEventListener("click", onQuizFinish);
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw7_zpJF7DDaPQ1y9CfaKNet_DrcP6E2xdxjVptVB_doZTiVH9hZoLCr4pfIAYImp83/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyB6REVSE9kUfVOayPR6XSjTCxH-dlWn8DsYIg2A8iviFWptThM95fQL4c3JyCDEokf/exec";
 
 /* =========================
    DATA
@@ -520,6 +520,7 @@ el('name').addEventListener('keydown', e => { if (e.key === 'Enter') btnStart.cl
 /* init view */
 show(loginSection);
 hide(arithSection); hide(quizSection); hide(postSection); hide(uraianSection); hide(finalSection);
+
 
 
 
