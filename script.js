@@ -28,7 +28,7 @@ function sendToGoogleSheet(data) {
    SAAT KUIS SELESAI
    ========================= */
 function onQuizFinish() {
-    const nama = document.getElementById("nama")?.value || "T";
+    const nama = document.getElementById("name")?.value || "name";
     const kelas = document.getElementById("kelas")?.value || "-";
     const skor = document.getElementById("final-score-text")?.innerText || "0";
 
@@ -520,4 +520,5 @@ el('name').addEventListener('keydown', e => { if (e.key === 'Enter') btnStart.cl
 /* init view */
 show(loginSection);
 hide(arithSection); hide(quizSection); hide(postSection); hide(uraianSection); hide(finalSection);
+
 
