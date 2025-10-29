@@ -48,10 +48,7 @@ function onQuizFinish() {
         kelas: kelas,
         skor: skor,
         uraian: uraian,
-        uraian2: uraian2,
-        uraian3: uraian3,
-        uraian4: uraian4,
-        uraian5: uraian5,
+
     };
 
     sendToGoogleSheet(data);
@@ -523,3 +520,4 @@ el('name').addEventListener('keydown', e => { if (e.key === 'Enter') btnStart.cl
 /* init view */
 show(loginSection);
 hide(arithSection); hide(quizSection); hide(postSection); hide(uraianSection); hide(finalSection);
+
