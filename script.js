@@ -38,10 +38,10 @@ function onQuizFinish() {
     // Pastikan panjang array selalu 5 elemen
     let uraian = []
     uraian[0] = document.getElementById("uraian_input_0").value || "";
-    const uraian2 = jawabanUraian[1] || "";
-    const uraian3 = jawabanUraian[2] || "";
-    const uraian4 = jawabanUraian[3] || "";
-    const uraian5 = jawabanUraian[4] || "";
+    uraian[1] = document.getElementById("uraian_input_1").value || "";
+    uraian[2] = document.getElementById("uraian_input_2").value || "";
+    uraian[3] = document.getElementById("uraian_input_3").value || "";
+    uraian[4] = document.getElementById("uraian_input_4").value || "";
 
     const data = {
         nama: nama,
@@ -70,7 +70,7 @@ document.getElementById("btnDownloadCSV").insertAdjacentHTML(
    EVENT KETIKA TOMBOL DIKLIK
    ========================= */
 document.getElementById("btnKirimSheet").addEventListener("click", onQuizFinish);
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz5o-vjl6QC_CoBawUhxsQvqtS67BwqtYvhmxPs7ZR08jIq0J-pGe0E_duLNdCvguxn/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw7_zpJF7DDaPQ1y9CfaKNet_DrcP6E2xdxjVptVB_doZTiVH9hZoLCr4pfIAYImp83/exec";
 
 /* =========================
    DATA
