@@ -474,7 +474,7 @@ function showFinal(payload, sentToSheet) {
     hide(arithSection);
     show(finalSection);
 
-    finalScoreText.textContent = `${player.name} dari kelas ${player.kelas}, skor pilihan gandamu: ${pgScore} / ${quizData.length}`;
+    finalScoreText.textContent = `skor pilihan gandamu: ${pgScore} / ${quizData.length}`;
     if (pgScore >= 9) finalMessage.textContent = "🌟 Luar biasa! Kamu sangat hebat!";
     else if (pgScore >= 7) finalMessage.textContent = "👏 Bagus sekali! Terus pertahankan!";
     else if (pgScore >= 4) finalMessage.textContent = "👍 Bagus! Terus latihan ya!";
@@ -520,5 +520,6 @@ el('name').addEventListener('keydown', e => { if (e.key === 'Enter') btnStart.cl
 /* init view */
 show(loginSection);
 hide(arithSection); hide(quizSection); hide(postSection); hide(uraianSection); hide(finalSection);
+
 
 
