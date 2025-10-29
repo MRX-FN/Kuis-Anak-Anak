@@ -48,7 +48,6 @@ function onQuizFinish() {
         kelas: kelas,
         skor: skor,
         uraian: uraian,
-        uraian1: uraian1,
         uraian2: uraian2,
         uraian3: uraian3,
         uraian4: uraian4,
