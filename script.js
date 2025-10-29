@@ -36,7 +36,7 @@ function onQuizFinish() {
     const jawabanUraian = window.jawabanUraian || [];
 
     // Pastikan panjang array selalu 5 elemen
-    const uraian1 = jawabanUraian[0] || "";
+    const uraian1 = document.getElementById("uraian_input_0") || "";
     const uraian2 = jawabanUraian[1] || "";
     const uraian3 = jawabanUraian[2] || "";
     const uraian4 = jawabanUraian[3] || "";
