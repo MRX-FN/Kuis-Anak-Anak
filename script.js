@@ -93,7 +93,7 @@ const quizData = [
 
 Tiara mendapat giliran bernyanyi di depan kelas. Sejak pagi, ia sudah berlatih, tetapi ketika berdiri di depan teman-temannya, ia mendadak lupa lirik lagu. Tiara merasa malu dan langsung duduk kembali. Teman-temannya ada yang menertawakan, tetapi ada juga yang memberi semangat. Pak Guru menenangkan dan membujuk Tiara untuk mencoba lagi. Namun, Tiara merasa kecewa dan tidak yakin ingin mencoba lagi.`,
         question: "1. Permasalahan yang dihadapi tokoh Tiara dalam cerita di atas yaitu … .",
-        options: ["A. Tiara lupa lirik lagu saat tampil", "B. Tiara malu ketika bernyanyi", "C. Tiara gugup di depan kelas"],
+        options: ["A. Tiara lupa lirik lagu saat tampil", "B. Tiara malu ketika bernyanyi", "C. Tiara gugup di depan kelas", "D. Tiara Sudah Cape"],
         answer: 0
     },
     {
@@ -520,6 +520,7 @@ el('name').addEventListener('keydown', e => { if (e.key === 'Enter') btnStart.cl
 /* init view */
 show(loginSection);
 hide(arithSection); hide(quizSection); hide(postSection); hide(uraianSection); hide(finalSection);
+
 
 
 
