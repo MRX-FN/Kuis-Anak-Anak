@@ -109,8 +109,15 @@ function csvRowsToObjects(rows) {
 }
 
 async function fetchSheetItems() {
-  const csvUrl = toCsvExportUrl(SHEET_PUBLISHED_URL);
-  const res = await fetch(csvUrl);
+  let csvUrl = toCsvExportUrl(SHEET_PUBLISHED_URL);
+  try {
+    const u = new URL(csvUrl);
+    u.searchParams.set('_cb', String(Date.now()));
+    csvUrl = u.toString();
+  } catch (_) {
+    csvUrl += (csvUrl.includes('?') ? '&' : '?') + `_cb=${Date.now()}`;
+  }
+  const res = await fetch(csvUrl, { cache: 'no-store' });
   const text = await res.text();
   const rows = parseCsv(text);
   return csvRowsToObjects(rows);
